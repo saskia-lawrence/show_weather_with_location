@@ -1,11 +1,13 @@
 import Axios from "axios";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./style.css";
 import ShowLocationInMap from "./ShowLocationInMap";
 
 export default function Weather() {
   let [city, setCity] = useState("");
   let [data, setData] = useState();
+
+  let myRef = useRef();
 
   async function fetchData() {
     try {
@@ -19,7 +21,12 @@ export default function Weather() {
       alert("Looks there is a typo. Please change and try again.");
     }
   }
-  console.log(data);
+
+  useEffect(() => {
+    let inputElm = myRef.current;
+    inputElm.focus();
+  }, []);
+
   return (
     <div className="container">
       <div className="content">
@@ -29,6 +36,7 @@ export default function Weather() {
           className="input"
           placeholder="Enter the city name"
           value={city}
+          ref={myRef}
           onChange={(event) => setCity(event.target.value)}
         />
         <button onClick={fetchData} className="button">
